@@ -11,4 +11,4 @@ import CypressCapsense_I2C
 sensor = CypressCapsense_I2C.CypressCapsense_I2C(0x5D, debug=False)
 
 while(True):
-    print "0x%02X" % sensor.fetchTouchStatus()
+    print("0x%02X" % sensor.fetchTouchStatus())

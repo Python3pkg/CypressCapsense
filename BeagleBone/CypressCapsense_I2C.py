@@ -143,7 +143,7 @@ class CypressCapsense_I2C :
         self.debug = debug
 
     def errMsg(self):
-        print "Error accessing 0x%02X: Check your I2C address" % self.address
+        print("Error accessing 0x%02X: Check your I2C address" % self.address)
         return -1
 
     def read(self, register_address):
@@ -164,10 +164,10 @@ class CypressCapsense_I2C :
         try:
             result = self.bus.read_byte_data(self.address, register_address)
             if self.debug:
-                print ("I2C: Device 0x%02X returned 0x%02X from reg 0x%02X" %
-                            (self.address, result & 0xFF, register_address))
+                print(("I2C: Device 0x%02X returned 0x%02X from reg 0x%02X" %
+                            (self.address, result & 0xFF, register_address)))
             return result
-        except IOError, err:
+        except IOError as err:
             return self.errMsg()
 
     def readString(self, register_address, size):
@@ -190,11 +190,11 @@ class CypressCapsense_I2C :
             results = self.bus.read_i2c_block_data(self.address, register_address, 
                                                    length)
             if self.debug:
-                print ("I2C: Device 0x%02X returned the following from reg 0x%02X" %
-                       (self.address, register_address))
-            print ' '.join('{:02x}'.format(x) for x in results)
+                print(("I2C: Device 0x%02X returned the following from reg 0x%02X" %
+                       (self.address, register_address)))
+            print(' '.join('{:02x}'.format(x) for x in results))
             return results
-        except IOError, err:
+        except IOError as err:
             return self.errMsg()
 
 #    def readBuffer(self):
@@ -257,8 +257,8 @@ class CypressCapsense_I2C :
         try:
             self.bus.write_byte_data(self.address, register_address, data)
             if self.debug:
-                print "I2C: Wrote 0x%02X to register 0x%02X" % (data, register_address)
-        except IOError, err:
+                print("I2C: Wrote 0x%02X to register 0x%02X" % (data, register_address))
+        except IOError as err:
             return self.errMsg()
 
     def writeString(self, register_address, data):
@@ -281,14 +281,14 @@ class CypressCapsense_I2C :
         """
         try:
             if self.debug:
-                print "I2C: Writing list to register 0x%02X:" % register_address
-                print ' '.join('{:02x}'.format(x) for x in results)
+                print("I2C: Writing list to register 0x%02X:" % register_address)
+                print(' '.join('{:02x}'.format(x) for x in results))
 
             if len(data) > 64:
                 data = data[:64]
 
             self.bus.write_i2c_block_data(self.address, register_address, data)
-        except IOError, err:
+        except IOError as err:
             return self.errMsg()
 
     def changeDeviceAddress(self, new_address):
@@ -398,8 +398,8 @@ class CypressCapsense_I2C :
         """
         try:
             if self.debug:
-                print "I2C: fetching touch status from registers 0x%02X and 0x%02X:" % \
-                (CypressCapsense_I2C.CSE_CS_READ_STATUS0, CypressCapsense_I2C.CSE_CS_READ_STATUS1)
+                print("I2C: fetching touch status from registers 0x%02X and 0x%02X:" % \
+                (CypressCapsense_I2C.CSE_CS_READ_STATUS0, CypressCapsense_I2C.CSE_CS_READ_STATUS1))
 
 
             tmp = self.read(CypressCapsense_I2C.CSE_CS_READ_STATUS0)
@@ -411,9 +411,9 @@ class CypressCapsense_I2C :
             tmp3 = (tmp << 8) | (tmp2)
 
             if self.debug:
-                print tmp3
+                print(tmp3)
 
-        except IOError, err:
+        except IOError as err:
             return self.errMsg()
 
 
@@ -446,7 +446,7 @@ class CypressCapsense_I2C :
 
         try:
             if self.debug:
-                print "I2C: fetching raw count from register 0x%02X, port %d, sensor %d:" % (CypressCapsense_I2C.CSE_CS_READ_BUTTON, port, sensor)  
+                print("I2C: fetching raw count from register 0x%02X, port %d, sensor %d:" % (CypressCapsense_I2C.CSE_CS_READ_BUTTON, port, sensor))  
 
             self.write(CypressCapsense_I2C.CSE_CS_READ_BUTTON, port_sensor_select)
 
@@ -454,10 +454,10 @@ class CypressCapsense_I2C :
             tmp |= self.read(CypressCapsense_I2C.CSE_CS_READ_RAWL)
 
             if self.debug:
-                print tmp
+                print(tmp)
 
             return tmp
-        except IOError, err:
+        except IOError as err:
             return self.errMsg()
 
     def reset(self):
@@ -466,9 +466,9 @@ class CypressCapsense_I2C :
         """
         try:
             if self.debug:
-                print "I2C: resetting the touch sensor baseline at register 0x%02X with 0x%02X:" % (CypressCapsense_I2C.CSE_CS_FILTERING, CypressCapsense_I2C.CS_FILTERING_TOUCH_BASELINE_RESET)
+                print("I2C: resetting the touch sensor baseline at register 0x%02X with 0x%02X:" % (CypressCapsense_I2C.CSE_CS_FILTERING, CypressCapsense_I2C.CS_FILTERING_TOUCH_BASELINE_RESET))
             self.write(CypressCapsense_I2C.CSE_CS_FILTERING, CypressCapsense_I2C.CS_FILTERING_TOUCH_BASELINE_RESET)
-        except IOError, err:
+        except IOError as err:
             return self.errMsg()
 
     def reboot(self):
@@ -477,12 +477,12 @@ class CypressCapsense_I2C :
         """
         try:      
             if self.debug:
-                print "I2C: rebooting, at register 0x%02X, with commands 0x%02X, 0x%02X and 0x%02X:" % (CypressCapsense_I2C.CSE_COMMAND_REG, CypressCapsense_I2C.SETUP_OPERATION_MODE, 
-                               RECONFIGURE_DEVICE, CypressCapsense_I2C.ORMAL_OPERATION_MODE)
+                print("I2C: rebooting, at register 0x%02X, with commands 0x%02X, 0x%02X and 0x%02X:" % (CypressCapsense_I2C.CSE_COMMAND_REG, CypressCapsense_I2C.SETUP_OPERATION_MODE, 
+                               RECONFIGURE_DEVICE, CypressCapsense_I2C.ORMAL_OPERATION_MODE))
             self.write(CypressCapsense_I2C.CSE_COMMAND_REG, CypressCapsense_I2C.SETUP_OPERATION_MODE)
             self.write(CypressCapsense_I2C.CSE_COMMAND_REG, CypressCapsense_I2C.ECONFIGURE_DEVICE)
             self.write(CypressCapsense_I2C.CSE_COMMAND_REG, CypressCapsense_I2C.NORMAL_OPERATION_MODE)
-        except IOError, err:
+        except IOError as err:
             return self.errMsg()
 
 #    def fetchFirmwareRevision(self):
@@ -522,6 +522,6 @@ class CypressCapsense_I2C :
 if __name__ == '__main__':
     try:
         bus = CypressCapsense_I2C(address=0)
-        print "Default I2C bus is accessible"
+        print("Default I2C bus is accessible")
     except:
-        print "Error accessing default I2C bus"
+        print("Error accessing default I2C bus")
